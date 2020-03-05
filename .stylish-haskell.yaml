@@ -18,4 +18,3 @@ steps:
       remove_redundant: true
   - trailing_whitespace: {}
 newline: native
-
