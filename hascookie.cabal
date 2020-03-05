@@ -10,8 +10,10 @@ executable hascookie
   -- other-modules:
   -- other-extensions:
   build-depends:      base >=4.12 && <4.14
-                    , Spock >=0.13
                     , text
+                    , Spock >=0.13
+                    , Spock-lucid
+                    , lucid
                     , http-types
                     , reroute
                     , mtl

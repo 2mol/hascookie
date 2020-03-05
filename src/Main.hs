@@ -5,9 +5,12 @@ module Main where
 import           Control.Monad.Trans (liftIO)
 import           Data.IORef (IORef, atomicModifyIORef', newIORef)
 import qualified Data.Text as T
+import qualified Data.Text.Lazy as TL
 import           Web.Spock ((<//>))
 import qualified Web.Spock as Spock
 import qualified Web.Spock.Config as SC
+-- import           Web.Spock.Lucid (lucid)
+import qualified Lucid
 
 type SessionState = ()
 data ServerState  = DummyAppState (IORef Int)
@@ -19,9 +22,15 @@ main = do
     Spock.runSpock 8080 (Spock.spock spockCfg app)
 
 app :: Spock.SpockM () SessionState ServerState ()
-app = do
-    Spock.get Spock.root $
-        Spock.text "Hello World!"
+app =
+    let
+        html :: Lucid.Html ()
+        html = do
+            Lucid.h1_ [Lucid.style_ "color:red"] "cookies?"
+            Lucid.p_ [Lucid.style_ "font-weight:bold"] "how many?"
+            Lucid.input_ []
+    in do
+    Spock.get Spock.root $ Spock.html $ TL.toStrict $ Lucid.renderText html
 
     Spock.get ("hello" <//> Spock.var) $
         \name -> do
